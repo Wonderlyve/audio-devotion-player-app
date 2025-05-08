@@ -1,11 +1,11 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Sermon } from '../types/sermon';
+import { Course } from '../types/course';
 
 interface FavoritesContextProps {
-  favorites: Sermon[];
-  toggleFavorite: (sermon: Sermon) => void;
-  isFavorite: (sermonId: string) => boolean;
+  favorites: Course[];
+  toggleFavorite: (course: Course) => void;
+  isFavorite: (courseId: string) => boolean;
 }
 
 const FavoritesContext = createContext<FavoritesContextProps | undefined>(undefined);
@@ -23,11 +23,11 @@ interface FavoritesProviderProps {
 }
 
 export const FavoritesProvider: React.FC<FavoritesProviderProps> = ({ children }) => {
-  const [favorites, setFavorites] = useState<Sermon[]>([]);
+  const [favorites, setFavorites] = useState<Course[]>([]);
 
   // Load favorites from localStorage on mount
   useEffect(() => {
-    const savedFavorites = localStorage.getItem('sermon-favorites');
+    const savedFavorites = localStorage.getItem('course-favorites');
     if (savedFavorites) {
       try {
         setFavorites(JSON.parse(savedFavorites));
@@ -39,23 +39,23 @@ export const FavoritesProvider: React.FC<FavoritesProviderProps> = ({ children }
 
   // Save favorites to localStorage when they change
   useEffect(() => {
-    localStorage.setItem('sermon-favorites', JSON.stringify(favorites));
+    localStorage.setItem('course-favorites', JSON.stringify(favorites));
   }, [favorites]);
 
-  const toggleFavorite = (sermon: Sermon) => {
+  const toggleFavorite = (course: Course) => {
     setFavorites(prevFavorites => {
-      const isAlreadyFavorite = prevFavorites.some(fav => fav.id === sermon.id);
+      const isAlreadyFavorite = prevFavorites.some(fav => fav.id === course.id);
       
       if (isAlreadyFavorite) {
-        return prevFavorites.filter(fav => fav.id !== sermon.id);
+        return prevFavorites.filter(fav => fav.id !== course.id);
       } else {
-        return [...prevFavorites, sermon];
+        return [...prevFavorites, course];
       }
     });
   };
 
-  const isFavorite = (sermonId: string) => {
-    return favorites.some(sermon => sermon.id === sermonId);
+  const isFavorite = (courseId: string) => {
+    return favorites.some(course => course.id === courseId);
   };
 
   const value = {

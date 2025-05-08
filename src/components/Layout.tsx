@@ -6,14 +6,14 @@ import MiniPlayer from './MiniPlayer';
 import { usePlayer } from '../context/PlayerContext';
 
 const Layout: React.FC = () => {
-  const { currentSermon } = usePlayer();
+  const { currentCourse } = usePlayer();
   
   return (
     <div className="pb-16 min-h-screen bg-background">
-      <main className={currentSermon ? 'pb-16' : ''}>
+      <main className={currentCourse ? 'pb-16' : ''}>
         <Outlet />
       </main>
-      {currentSermon && <MiniPlayer />}
+      {currentCourse && <MiniPlayer />}
       <BottomNavigation />
     </div>
   );

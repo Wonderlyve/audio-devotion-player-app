@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useFavorites } from '../context/FavoritesContext';
-import SermonList from '../components/SermonList';
+import CourseList from '../components/CourseList';
 import { Heart } from 'lucide-react';
 
 const Favorites: React.FC = () => {
@@ -15,14 +15,14 @@ const Favorites: React.FC = () => {
         </div>
         <h1 className="text-3xl font-bold">Mes Favoris</h1>
         <p className="text-muted-foreground mt-2">
-          Retrouvez toutes vos prédications préférées ici
+          Retrouvez tous vos cours préférés ici
         </p>
       </div>
 
-      <SermonList 
-        sermons={favorites} 
+      <CourseList 
+        courses={favorites} 
         title=""
-        emptyMessage="Aucune prédication dans vos favoris. Marquez des prédications comme favorites pour les retrouver ici."
+        emptyMessage="Aucun cours dans vos favoris. Marquez des cours comme favoris pour les retrouver ici."
       />
     </div>
   );

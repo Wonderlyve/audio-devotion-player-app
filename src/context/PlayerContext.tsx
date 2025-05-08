@@ -1,14 +1,14 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Sermon } from '../types/sermon';
+import { Course } from '../types/course';
 
 interface PlayerContextProps {
-  currentSermon: Sermon | null;
+  currentCourse: Course | null;
   isPlaying: boolean;
-  playSermon: (sermon: Sermon) => void;
-  pauseSermon: () => void;
-  resumeSermon: () => void;
-  stopSermon: () => void;
+  playCourse: (course: Course) => void;
+  pauseCourse: () => void;
+  resumeCourse: () => void;
+  stopCourse: () => void;
 }
 
 const PlayerContext = createContext<PlayerContextProps | undefined>(undefined);
@@ -26,57 +26,58 @@ interface PlayerProviderProps {
 }
 
 export const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
-  const [currentSermon, setCurrentSermon] = useState<Sermon | null>(null);
+  const [currentCourse, setCurrentCourse] = useState<Course | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
+  const [videoElement, setVideoElement] = useState<HTMLVideoElement | null>(null);
 
-  const playSermon = (sermon: Sermon) => {
-    if (audioElement) {
-      audioElement.pause();
+  const playCourse = (course: Course) => {
+    if (videoElement) {
+      videoElement.pause();
     }
 
-    const audio = new Audio(sermon.audioUrl);
-    audio.play().catch(error => console.error("Error playing audio:", error));
-    setAudioElement(audio);
-    setCurrentSermon(sermon);
+    const video = document.createElement('video');
+    video.src = course.videoUrl;
+    video.play().catch(error => console.error("Error playing video:", error));
+    setVideoElement(video);
+    setCurrentCourse(course);
     setIsPlaying(true);
 
-    audio.addEventListener('ended', () => {
+    video.addEventListener('ended', () => {
       setIsPlaying(false);
     });
   };
 
-  const pauseSermon = () => {
-    if (audioElement) {
-      audioElement.pause();
+  const pauseCourse = () => {
+    if (videoElement) {
+      videoElement.pause();
       setIsPlaying(false);
     }
   };
 
-  const resumeSermon = () => {
-    if (audioElement) {
-      audioElement.play().catch(error => console.error("Error resuming audio:", error));
+  const resumeCourse = () => {
+    if (videoElement) {
+      videoElement.play().catch(error => console.error("Error resuming video:", error));
       setIsPlaying(true);
     }
   };
 
-  const stopSermon = () => {
-    if (audioElement) {
-      audioElement.pause();
-      audioElement.currentTime = 0;
+  const stopCourse = () => {
+    if (videoElement) {
+      videoElement.pause();
+      videoElement.currentTime = 0;
       setIsPlaying(false);
-      setCurrentSermon(null);
-      setAudioElement(null);
+      setCurrentCourse(null);
+      setVideoElement(null);
     }
   };
 
   const value = {
-    currentSermon,
+    currentCourse,
     isPlaying,
-    playSermon,
-    pauseSermon,
-    resumeSermon,
-    stopSermon
+    playCourse,
+    pauseCourse,
+    resumeCourse,
+    stopCourse
   };
 
   return (
